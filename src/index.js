@@ -1,76 +1,24 @@
-# koa-queries
-
-Convent URL query to mongoose queries
-
-
-### Quick Start
-
-***GET:***
-
-`/api/v1/news?catalog_is=commom&title_startsWith=today&viewCount_gte=100&content.markdown_is=isNull&_asc=createdA&_filter=-content,-description`
-
-***Queries:***
-
-```js
-// ctx.state.query
-{
-    catalog: 'common',
-    title: /^today/,
-    viewCount: { $gte: 100 },
-    'content.markdown': null,
-    // content: { markdown: null },
-}
-
-// filter
-// mongoose remove/select fields
-'-content -description'
-
-// ctx.state.sort
-{
-    createdA: 1
-}
-```
-
-
-
-
-### Installation
-
-`$ npm install koa-queries`
-
-
-### Usage
-
-```
-const app = require('koa')()
-const koaQueries = require('koa-quires')
- 
-app.use(koaQueries())
-
-
-
-app.user(async (ctx) => {
-    const { query, filter, sort,  } = ctx.state
-
-    // other
-    if (ctx.user.is_admin) {
-        query.state = 4
+module.exports = (opt = {}) => {
+  return (ctx, next) => {
+    ctx.state.query = {}
+    const query = {}
+    const sort = {
+      _id: -1
     }
-
-    ctx.body = await ctx.db.News.find(query, filter)
-        // TODO: v 1.0.2 add pagination
-        // .skip(skip)
-        // .limit(limit)
-        .sort(sort)
-        
-})
-```
-
-### API
-
-```js
-// read source..
-switch (option) {
+    if (ctx.query._desc) {
+      delete sort._id
+      sort[ctx.query._desc] = -1
+    }
+    if (ctx.query._asc) {
+      delete sort._id
+      sort[ctx.query._asc] = 1
+    }
+    let filter = ''
+    Object.keys(ctx.query).forEach((_key) => {
+      const key = _key.split('_')[0].replace('$', '_')
+      const value = ctx.query[_key]
+      const option = _key.split('_')[1]
+      switch (option) {
         case 'filter':
           filter = value.split(',').join(' ')
           break
@@ -127,5 +75,10 @@ switch (option) {
           }
           break
       }
-```
-
+    })
+    ctx.state.query = query
+    ctx.state.sort = sort
+    ctx.state.filter = filter
+    await next()
+  }
+}
