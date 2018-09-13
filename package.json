@@ -1,10 +1,17 @@
 {
   "name": "koa-queries",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convent URL query to mongoose queries",
   "main": "src",
   "repository": "https://github.com/wiviwiv/koa-queries.git",
   "author": "<wivwiv bigpar@qq.com>",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "keywords": [
+    "middleware",
+    "koa",
+    "koa2",
+    "mongoose",
+    "quires"
+  ]
 }

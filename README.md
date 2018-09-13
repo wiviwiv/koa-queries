@@ -3,11 +3,49 @@
 Convent URL query to mongoose queries
 
 
+### Installation
+
+`$ npm install koa-queries`
+
+
+### Usage
+
+```js
+const app = require('koa')()
+const koaQueries = require('koa-quires')
+ 
+app.use(koaQueries())
+
+app.user(async (ctx) => {
+    const { query, filter, sort,  } = ctx.state
+
+    // other
+    if (ctx.user.is_admin) {
+        query.state = 4
+    }
+
+    ctx.body = await ctx.db.News.find(query, filter)
+        // TODO: v 1.0.2 add pagination
+        // .skip(skip)
+        // .limit(limit)
+        .sort(sort)
+        
+})
+```
+
+
 ### Quick Start
 
 ***GET:***
 
-`/api/v1/news?catalog_is=commom&title_startsWith=today&viewCount_gte=100&content.markdown_is=isNull&_asc=createdA&_filter=-content,-description`
+```bash
+/api/v1/news?catalog_is=commom
+&title_startsWith=today
+&viewCount_gte=100
+&content.markdown_is=isNull
+&_asc=createdAt
+&_filter=-content,-description
+```
 
 ***Queries:***
 
@@ -27,44 +65,10 @@ Convent URL query to mongoose queries
 
 // ctx.state.sort
 {
-    createdA: 1
+    createdAt: 1
 }
 ```
 
-
-
-
-### Installation
-
-`$ npm install koa-queries`
-
-
-### Usage
-
-```
-const app = require('koa')()
-const koaQueries = require('koa-quires')
- 
-app.use(koaQueries())
-
-
-
-app.user(async (ctx) => {
-    const { query, filter, sort,  } = ctx.state
-
-    // other
-    if (ctx.user.is_admin) {
-        query.state = 4
-    }
-
-    ctx.body = await ctx.db.News.find(query, filter)
-        // TODO: v 1.0.2 add pagination
-        // .skip(skip)
-        // .limit(limit)
-        .sort(sort)
-        
-})
-```
 
 ### API
 
