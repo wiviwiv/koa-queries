@@ -1,5 +1,5 @@
 module.exports = (opt = {}) => {
-  return (ctx, next) => {
+  return async (ctx, next) => {
     ctx.state.query = {}
     const query = {}
     const sort = {
