@@ -1,6 +1,6 @@
 {
   "name": "koa-queries",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Convent URL query to mongoose queries",
   "main": "src",
   "repository": "https://github.com/wiviwiv/koa-queries.git",

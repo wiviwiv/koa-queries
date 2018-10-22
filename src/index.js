@@ -15,9 +15,8 @@ module.exports = (opt = {}) => {
     }
     let filter = ''
     Object.keys(ctx.query).forEach((_key) => {
-      const key = _key.split('_')[0].replace('$', '_')
+      const [key, option] = _key.split('__')
       const value = ctx.query[_key]
-      const option = _key.split('_')[1]
       switch (option) {
         case 'filter':
           filter = value.split(',').join(' ')
