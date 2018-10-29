@@ -37,20 +37,14 @@ module.exports = (opt = {}) => {
           query[key] = null
           break
         case 'gte':
-          const $gte = Number(value)
-          if (!isNaN($gte)) {
-            query[key] = {
-              $gte
-            }
-          }
+          const $gte = Number(value) || value
+          query[key] = query[key] || {}
+          query[key].$gte = $gte
           break
         case 'lte':
-          const $lte = Number(value)
-          if (!isNaN($lte)) {
-            query[key] = {
-              $lte
-            }
-          }
+          const $lte = Number(value) || value
+          query[key] = query[key] || {}
+          query[key].$lte = $lte
           break
         case 'in':
           const $in = value.split(',')
